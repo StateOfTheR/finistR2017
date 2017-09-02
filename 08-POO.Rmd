@@ -1,0 +1,316 @@
+# Programmation orientée object à l'aide de classe R6 {#R6}
+
+
+
+## Principes et buts
+
+Un objet est une sorte de liste mieux structurée. 
+
+Principe :
+
+- créer de nouvelles classes avec des attributs/champs (variables) définis et des méthodes (fonctions propres)
+- un objet est alors instancié à partir d'une classe,
+- créer des classes générales et des classes plus spécifiques qui héritent des clases générales.
+
+
+\bigskip
+
+
+Intérêt :
+
+  - structurer le code, 
+  - éviter de dupliquer le code,
+  - plus facile à débugger, plus robuste,
+  - plus lisible pour la diffusion,
+  - coder à plusieurs.
+
+Structure d'une classe R6 [@R-R6]
+
+```{r,eval=FALSE}
+library(R6)
+maclasse=R6class("maclasse",
+                 public=list(
+                  attr1=NULL,
+                  attr2=NULL,
+                  attr3=NULL,
+                  initialize=function(attr1=NA,attr2=NA)
+                  {
+                    self$attr1=attr1
+                    self$attr2=attr2
+                    private$check()
+                    private$attr4=attr1+attr2
+                  },
+                  somme=function()
+                  {
+                    return(private$attr4)
+                  }
+                  ),
+                  private=list(
+                  attr4=NULL,
+                  check=function()
+                  {
+                    if (self$attr1<0) 
+                      stop("attr1 must be positive")
+                  }
+                 )
+                 )
+```
+
+
+- ``self$...`` permet d'appeler (dans la définition de la classe) les champs et les méthodes propres à la classe déclarés en public.
+- ``private$`` permet d'appeler (dans la définition de la classe) les champs et les méthodes propres à la classe déclarés en private.
+- on crée/instancie un objet de la classe en tapant ``obj=maclasse$new(a1,a2)``.
+- on appelle les méthodes de la classe en tapant ``maclasse$somme()``.
+- on peut créer des sous-classes qui hériteront d'une classe supérieure. 
+
+
+
+## Exemple de classes pour le modèle linéaire (généralisé)
+
+On commence par créer des classes modèles ajustées qui contiennent les paramètres qui seront ajustés par le modèle.
+
+```{r}
+library(R6)
+modlin_ajuste=R6Class("modlin_ajuste",
+        public = list(
+          X=NULL,
+          beta=NULL,
+          initialize=function(X,beta)
+          {
+             self$X=X
+             self$beta=beta
+          }
+        )
+)
+```
+
+On a créé une classe générale et on crée 2 sousclasses qui en hériteront : ``gauss_modlin_ajuste`` et 
+``poiss_modlin_ajuste``. Dans la définition des sous-clases, la commande ``inherit`` permet de faire hériter de la classe précédemment définie. 
+Pour le modèle gaussien, on peut compléter l'initialisation pour ajouter $\sigma^2$ en utilisant 
+``super$initialize(X,beta)`` dans la fonction intialize de cette classe.
+
+```{r}
+poiss_modlin_ajuste=R6Class("poiss_modlin_ajuste",
+          inherit = modlin_ajuste,
+          public = list(
+             pred=function(Xnew=NULL)
+             {
+               if (is.null(Xnew))
+                 {
+                   return(exp(self$X%*%self$beta))
+               }
+               else
+                 return(exp(Xnew%*%self$beta))
+             },
+             sim=function(Xnew=NULL)
+             {
+               if (is.null(Xnew))
+               {
+                 return(rpois(nrow(self$X),self$pred()))
+               }
+               else 
+                 return(rpois(nrow(Xnew),self$pred(Xnew)))
+             }
+          )
+)
+```
+
+
+
+```{r}
+gauss_modlin_ajuste=R6Class("gauss_modlin_ajuste",
+          inherit = modlin_ajuste,
+          public = list(
+            sigma2=NULL,
+            initialize=function(X,beta,sig2)
+            {
+               super$initialize(X,beta)
+               self$sigma2=sig2
+               private$check()
+            },
+            pred=function(Xnew=NULL)
+            {
+              if (is.null(Xnew))
+              {
+                 return(self$X%*%self$beta)  
+              }
+              else 
+                  return(Xnew%*%self$beta)
+            },
+            sim=function(Xnew=NULL)
+            { 
+              if (is.null(Xnew))
+              {
+                return(rnorm(nrow(self$X),self$pred(),sqrt(self$sigma2)))
+              }
+              else 
+                 return(rnorm(nrow(Xnew),self$pred(Xnew),sqrt(self$sigma2)))
+            }
+          ),
+          private = list(
+            check=function()
+            {
+              if (self$sigma2<0) stop("sigma^2 must be positive")
+            }
+          )
+)
+```
+
+On essaie :
+```{r}
+modgauss=gauss_modlin_ajuste$new(matrix(runif(100,1,7),50,2),c(-2,6),3)
+# on accede aux champs ainsi
+modgauss$beta
+# on peut utiliser les fonctions pour simuler aux points du meme design
+modgauss$sim()
+# on peut utiliser la meme fonction pour simuler aux points d'un autre design
+modgauss$sim(matrix(c(0,2),1,2))
+```
+
+
+On crée à présent les classes permettant de recevoir les données. Une fonction ``estime`` au sein de ces classes aura pour sortie un modèle ajusté.
+
+```{r}
+don=R6Class("don",
+    public=list(
+      Y=NULL,
+      X=NULL,
+      initialize=function(X,Y)
+      {
+        self$X=X
+        self$Y=Y
+        private$check()
+      }
+      ),
+     private=list(
+       check=function()
+       {
+         if (nrow(self$X)!=length(self$Y))
+           stop("êtes vous ivre ?")
+       }
+     )
+    )
+```
+
+On distingue une classe pour le modèle Poisson et pour le modèle gaussien.
+
+```{r}
+poisdon=R6Class("poisdon",
+                 inherit = don,
+                 public = list(
+                   estime=function()
+                   {
+                     res=glm(self$Y~self$X-1,family = "poisson")
+                     obj=poiss_modlin_ajuste$new(self$X,unname(res$coefficients))
+                     return(obj)
+                   }
+                 )
+                 )
+```
+
+On essaie
+```{r}
+#on définit un modèle
+modpois=poiss_modlin_ajuste$new(matrix(runif(100,-1,2),50,2),c(1,2))
+#on simule selon ce modele
+Y=modpois$sim()
+X=modpois$X
+
+# on cree la structure donnees
+ex=poisdon$new(X,Y)
+#on estime
+est=ex$estime()
+est$beta
+#on peut prédire selon le modèle
+est$pred(matrix(c(1,2),1,2))
+```
+
+On fait de même pour les données censées suivre une loi gaussienne en ajoutant la fonction à la suite de
+la définition de la classe. Ceci est utile lorsque les fonctions sont trop volumineuses.
+
+```{r}
+gaussdon=R6Class("gaussdon",
+                 inherit = don)
+
+gaussdon$set("public","estime",
+       function()
+       {
+            beta   <- solve(t(self$X)%*% self$X) %*% t(self$X) %*% self$Y
+            sigma2 <- sum((self$Y - self$X %*% beta)^2)/(nrow(self$X) - ncol(self$X)) 
+            obj=gauss_modlin_ajuste$new(self$X,c(beta),sigma2)
+            return(obj)       
+        }
+)
+```
+
+```{r}
+modgauss=gauss_modlin_ajuste$new(matrix(runif(100,1,7),50,2),c(-2,6),3)
+X=modgauss$X
+Y=modgauss$sim()
+exx=gaussdon$new(X,Y)
+estt=exx$estime()
+estt$beta
+estt$sigma2
+```
+
+
+
+Si on s'était trompé sur les dimensions.
+```{r,message=TRUE}
+modgauss=gauss_modlin_ajuste$new(matrix(runif(100,1,7),50,2),c(-2,6),3)
+X=modgauss$X
+Y=modgauss$sim()
+Y=Y[-1]
+a=try(gaussdon$new(X,Y))
+print(a)
+```
+
+
+
+
+## Exercice
+
+- 1) Coder la sous-classe correspondante au modèle linéaire généralisée pour une loi bernoulli (lien logit ou probit)
+- 2) Coder en classe votre modèle préféré
+
+
+
+## Quelques remarques supplémentaires
+
+Pour diffuser un code, certains (dont JC) pensent qu'il vaut mieux refaire une surcouche qui s'appelle de manière classique avec une fonction et des options.
+
+Exemple 
+```{r,eval=FALSE}
+fitmod=function(X,Y,loi)
+{
+  switch(loi, 
+         poisson={
+           obj=poisdon$new(X,Y)
+           res=obj$estime()
+           return(res$beta)
+         },
+         gaussien={
+           obj=gaussdon$new(X,Y)
+           res=obj$estime()
+           return(list(res$beta,res$sigma2))
+         }  
+  )
+}
+```
+
+
+Lorsque l'on veut copier un objet (par exemple ``exx`` de la classe ``gaussdon``), il faut faire :
+```{r}
+a=exx$clone()
+```
+Sinon, si on fait ``b=exx``, on modifiera ``exx`` en modifiant ``b``.
+
+
+Quelques liens utiles :
+
+- [vignette sur les classes R6](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html#adding-members-to-an-existing-class) 
+
+- [Think R partie 1](https://thinkr.fr/au-menu-du-jour-r6-partie-1/)
+
+- [Think R partie 2](https://thinkr.fr/au-menu-du-jour-r6-partie-2/)
+
