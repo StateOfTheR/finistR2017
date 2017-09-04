@@ -25,7 +25,7 @@
 <meta name="author" content="Le groupe State Of The R in Roscoff">
 
 
-<meta name="date" content="2017-09-01">
+<meta name="date" content="2017-09-04">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -128,7 +128,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.2.4" data-path="rmarkdown.html"><a href="rmarkdown.html#markdown-cheatsheet"><i class="fa fa-check"></i><b>3.2.4</b> Markdown Cheatsheet</a></li>
 <li class="chapter" data-level="3.2.5" data-path="rmarkdown.html"><a href="rmarkdown.html#pandoc"><i class="fa fa-check"></i><b>3.2.5</b> Pandoc</a></li>
 <li class="chapter" data-level="3.2.6" data-path="rmarkdown.html"><a href="rmarkdown.html#rmarkdown-r-rmarkdown"><i class="fa fa-check"></i><b>3.2.6</b> RMarkdown <span class="citation">(Allaire et al. <a href="#ref-R-rmarkdown">2017</a>)</span></a></li>
-<li class="chapter" data-level="3.2.7" data-path="rmarkdown.html"><a href="rmarkdown.html#de-rmarkdown-a-un-document-finalise-avec-knitr-r-knitr"><i class="fa fa-check"></i><b>3.2.7</b> De RMarkdown à un document finalisé avec knitr <span class="citation">(Xie <a href="#ref-R-knitr">2017</a><a href="#ref-R-knitr">c</a>)</span></a></li>
+<li class="chapter" data-level="3.2.7" data-path="rmarkdown.html"><a href="rmarkdown.html#de-rmarkdown-a-un-document-finalise-avec-knitr-r-knitr"><i class="fa fa-check"></i><b>3.2.7</b> De RMarkdown à un document finalisé avec knitr <span class="citation">(Xie <a href="#ref-R-knitr">2017</a><a href="#ref-R-knitr">b</a>)</span></a></li>
 </ul></li>
 <li class="chapter" data-level="3.3" data-path="rmarkdown.html"><a href="rmarkdown.html#un-document-rmarkdown-a-la-loupe"><i class="fa fa-check"></i><b>3.3</b> Un document RMarkdown à la loupe</a><ul>
 <li class="chapter" data-level="3.3.1" data-path="rmarkdown.html"><a href="rmarkdown.html#entete-du-document-yaml"><i class="fa fa-check"></i><b>3.3.1</b> Entete du document : YAML</a></li>
@@ -170,7 +170,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="6.3.1" data-path="tidyverse.html"><a href="tidyverse.html#solution"><i class="fa fa-check"></i><b>6.3.1</b> Solution</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="R6.html"><a href="R6.html"><i class="fa fa-check"></i><b>7</b> Programmation orientée object à l’aide de classe R6</a><ul>
+<li class="chapter" data-level="7" data-path="R6.html"><a href="R6.html"><i class="fa fa-check"></i><b>7</b> Programmation orientée objet à l’aide de classe R6</a><ul>
 <li class="chapter" data-level="7.1" data-path="R6.html"><a href="R6.html#principes-et-buts"><i class="fa fa-check"></i><b>7.1</b> Principes et buts</a></li>
 <li class="chapter" data-level="7.2" data-path="R6.html"><a href="R6.html#exemple-de-classes-pour-le-modele-lineaire-generalise"><i class="fa fa-check"></i><b>7.2</b> Exemple de classes pour le modèle linéaire (généralisé)</a></li>
 <li class="chapter" data-level="7.3" data-path="R6.html"><a href="R6.html#exercice-1"><i class="fa fa-check"></i><b>7.3</b> Exercice</a></li>
@@ -282,7 +282,7 @@ by a blank line.</code></pre>
 <p>C’est un document pandoc avec des balises spécifiques R. <a href="http://rmarkdown.rstudio.com/lesson-1.html" class="uri">http://rmarkdown.rstudio.com/lesson-1.html</a></p>
 </div>
 <div id="de-rmarkdown-a-un-document-finalise-avec-knitr-r-knitr" class="section level3">
-<h3><span class="header-section-number">3.2.7</span> De RMarkdown à un document finalisé avec knitr <span class="citation">(Xie <a href="#ref-R-knitr">2017</a><a href="#ref-R-knitr">c</a>)</span></h3>
+<h3><span class="header-section-number">3.2.7</span> De RMarkdown à un document finalisé avec knitr <span class="citation">(Xie <a href="#ref-R-knitr">2017</a><a href="#ref-R-knitr">b</a>)</span></h3>
 <p>Le bouton knit effectue les opérations suivantes :</p>
 <ol style="list-style-type: decimal">
 <li>Extraire la partie Markdown texte</li>
@@ -307,7 +307,7 @@ by a blank line.</code></pre>
 <div id="code-chunk" class="section level3">
 <h3><span class="header-section-number">3.3.3</span> Code Chunk</h3>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">```{r}
-<span class="dv">2</span><span class="op">+</span><span class="dv">2</span>
+<span class="dv">2+2</span>
 ```</code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>ou python, ou sql, bash ….</p>
@@ -330,7 +330,7 @@ plot(speed<span class="op">~</span>dist)
 <p>Allaire, JJ, Joe Cheng, Yihui Xie, Jonathan McPherson, Winston Chang, Jeff Allen, Hadley Wickham, Aron Atkins, Rob Hyndman, and Ruben Arslan. 2017. <em>Rmarkdown: Dynamic Documents for R</em>. <a href="https://CRAN.R-project.org/package=rmarkdown" class="uri">https://CRAN.R-project.org/package=rmarkdown</a>.</p>
 </div>
 <div id="ref-R-knitr">
-<p>Xie, Yihui. 2017c. <em>Knitr: A General-Purpose Package for Dynamic Report Generation in R</em>. <a href="https://CRAN.R-project.org/package=knitr" class="uri">https://CRAN.R-project.org/package=knitr</a>.</p>
+<p>Xie, Yihui. 2017b. <em>Knitr: A General-Purpose Package for Dynamic Report Generation in R</em>. <a href="https://CRAN.R-project.org/package=knitr" class="uri">https://CRAN.R-project.org/package=knitr</a>.</p>
 </div>
 </div>
             </section>

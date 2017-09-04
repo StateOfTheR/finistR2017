@@ -1,4 +1,4 @@
-# Programmation orientée object à l'aide de classe R6 {#R6}
+# Programmation orientée objet à l'aide de classe R6 {#R6}
 
 
 
