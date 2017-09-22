@@ -25,7 +25,7 @@
 <meta name="author" content="Le groupe State Of The R in Roscoff">
 
 
-<meta name="date" content="2017-09-04">
+<meta name="date" content="2017-09-22">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -128,7 +128,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.2.4" data-path="rmarkdown.html"><a href="rmarkdown.html#markdown-cheatsheet"><i class="fa fa-check"></i><b>3.2.4</b> Markdown Cheatsheet</a></li>
 <li class="chapter" data-level="3.2.5" data-path="rmarkdown.html"><a href="rmarkdown.html#pandoc"><i class="fa fa-check"></i><b>3.2.5</b> Pandoc</a></li>
 <li class="chapter" data-level="3.2.6" data-path="rmarkdown.html"><a href="rmarkdown.html#rmarkdown-r-rmarkdown"><i class="fa fa-check"></i><b>3.2.6</b> RMarkdown <span class="citation">(Allaire et al. <a href="#ref-R-rmarkdown">2017</a>)</span></a></li>
-<li class="chapter" data-level="3.2.7" data-path="rmarkdown.html"><a href="rmarkdown.html#de-rmarkdown-a-un-document-finalise-avec-knitr-r-knitr"><i class="fa fa-check"></i><b>3.2.7</b> De RMarkdown à un document finalisé avec knitr <span class="citation">(Xie <a href="#ref-R-knitr">2017</a><a href="#ref-R-knitr">b</a>)</span></a></li>
+<li class="chapter" data-level="3.2.7" data-path="rmarkdown.html"><a href="rmarkdown.html#de-rmarkdown-a-un-document-finalise-avec-knitr-r-knitr"><i class="fa fa-check"></i><b>3.2.7</b> De RMarkdown à un document finalisé avec knitr <span class="citation">(Xie <a href="#ref-R-knitr">2017</a><a href="#ref-R-knitr">c</a>)</span></a></li>
 </ul></li>
 <li class="chapter" data-level="3.3" data-path="rmarkdown.html"><a href="rmarkdown.html#un-document-rmarkdown-a-la-loupe"><i class="fa fa-check"></i><b>3.3</b> Un document RMarkdown à la loupe</a><ul>
 <li class="chapter" data-level="3.3.1" data-path="rmarkdown.html"><a href="rmarkdown.html#entete-du-document-yaml"><i class="fa fa-check"></i><b>3.3.1</b> Entete du document : YAML</a></li>
@@ -301,7 +301,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 4          4.6         3.1          1.5         0.2  setosa
 ## 5          5.0         3.6          1.4         0.2  setosa
 ## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris &lt;-<span class="st"> </span>readr::<span class="kw">read_csv</span>(<span class="st">&quot;data/iris.csv&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;data/iris.csv&quot;</span>)
 iris</code></pre></div>
 <pre><code>## # A tibble: 150 x 5
 ##    sepal_length sepal_width petal_length petal_width species
@@ -325,9 +325,9 @@ iris</code></pre></div>
 <ul>
 <li>fonctions <code>spread</code>, <code>gather</code>, <code>unite</code>, <code>separate</code></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris_sepal &lt;-<span class="st"> </span><span class="kw">add_column</span>(iris, <span class="dt">ind =</span> <span class="dv">1</span>:<span class="kw">nrow</span>(iris))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris_sepal &lt;-<span class="st"> </span><span class="kw">add_column</span>(iris, <span class="dt">ind =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(iris))
 iris_sepal &lt;-<span class="st"> </span><span class="kw">select</span>(iris_sepal, ind, sepal_length, sepal_width, species)
-iris_sepal &lt;-<span class="st"> </span><span class="kw">gather</span>(iris_sepal, <span class="dt">key=</span><span class="st">&quot;attribute&quot;</span>, <span class="dt">value=</span><span class="st">&quot;measure&quot;</span>, -species, -ind)
+iris_sepal &lt;-<span class="st"> </span><span class="kw">gather</span>(iris_sepal, <span class="dt">key=</span><span class="st">&quot;attribute&quot;</span>, <span class="dt">value=</span><span class="st">&quot;measure&quot;</span>, <span class="op">-</span>species, <span class="op">-</span>ind)
 iris_sepal &lt;-<span class="st"> </span><span class="kw">arrange</span>(iris_sepal, ind)
 iris_sepal</code></pre></div>
 <pre><code>## # A tibble: 300 x 4
@@ -357,7 +357,7 @@ iris_sepal</code></pre></div>
 </ul>
 <p>et aussi <code>rename</code>, <code>group_by</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">by_species &lt;-<span class="st"> </span><span class="kw">group_by</span>(iris, species)
-dplyr::<span class="kw">summarize</span>(by_species, <span class="dt">moyenne =</span> <span class="kw">mean</span>(sepal_length))</code></pre></div>
+dplyr<span class="op">::</span><span class="kw">summarize</span>(by_species, <span class="dt">moyenne =</span> <span class="kw">mean</span>(sepal_length))</code></pre></div>
 <pre><code>## # A tibble: 3 x 2
 ##      species moyenne
 ##        &lt;chr&gt;   &lt;dbl&gt;
@@ -371,9 +371,9 @@ dplyr::<span class="kw">summarize</span>(by_species, <span class="dt">moyenne =<
 <li>Définition de l’opérateur pipe <code>%&gt;%</code> pour “enchaîner” les traitement sur un <code>tibble</code></li>
 <li>Force à la programmation fonctionnelle (une fonction = un argument, une sortie)</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris_sepal &lt;-<span class="st"> </span>iris %&gt;%<span class="st">  </span><span class="kw">add_column</span>(<span class="dt">ind =</span> <span class="dv">1</span>:<span class="kw">nrow</span>(iris)) %&gt;%
-<span class="st">    </span><span class="kw">select</span>(ind, sepal_length, sepal_width, species) %&gt;%
-<span class="st">  </span><span class="kw">gather</span>(<span class="dt">key=</span><span class="st">&quot;attribute&quot;</span>, <span class="dt">value=</span><span class="st">&quot;measure&quot;</span>, -species, -ind) %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris_sepal &lt;-<span class="st"> </span>iris <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">add_column</span>(<span class="dt">ind =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(iris)) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(ind, sepal_length, sepal_width, species) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="dt">key=</span><span class="st">&quot;attribute&quot;</span>, <span class="dt">value=</span><span class="st">&quot;measure&quot;</span>, <span class="op">-</span>species, <span class="op">-</span>ind) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">arrange</span>(ind)
 iris_sepal</code></pre></div>
 <pre><code>## # A tibble: 300 x 4
@@ -394,35 +394,35 @@ iris_sepal</code></pre></div>
 <div id="ggplot2" class="section level3">
 <h3><span class="header-section-number">6.2.5</span> ggplot2</h3>
 <p>Outil de visualisation</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span> species, <span class="dt">y=</span>sepal_length)) +<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span> species, <span class="dt">y=</span>sepal_length)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>()</code></pre></div>
 <p><img src="my-first-book_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span> species, <span class="dt">y=</span>sepal_length, <span class="dt">color =</span> species)) +<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span> species, <span class="dt">y=</span>sepal_length, <span class="dt">color =</span> species)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_jitter</span>()</code></pre></div>
 <p><img src="my-first-book_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span> species, <span class="dt">y=</span>sepal_length, <span class="dt">colour=</span>species)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_boxplot</span>() +<span class="st"> </span><span class="kw">geom_jitter</span>(<span class="dt">alpha=</span><span class="fl">0.5</span>) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span> species, <span class="dt">y=</span>sepal_length, <span class="dt">colour=</span>species)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_jitter</span>(<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;un très beau graphe&quot;</span>, <span class="dt">x=</span><span class="st">&quot;espèce&quot;</span>, <span class="dt">y=</span><span class="st">&quot;longueur de sépale&quot;</span>)</code></pre></div>
 <p><img src="my-first-book_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span> species, <span class="dt">fill=</span>species)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_bar</span>() +<span class="st"> </span><span class="kw">coord_polar</span>() +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span> species, <span class="dt">fill=</span>species)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_bar</span>() <span class="op">+</span><span class="st"> </span><span class="kw">coord_polar</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
 <p><img src="my-first-book_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">by_attr &lt;-<span class="st"> </span><span class="kw">gather</span>(iris, <span class="dt">key =</span> <span class="st">&quot;attribut&quot;</span>, <span class="dt">value=</span><span class="st">&quot;measurement&quot;</span>,
        sepal_length,sepal_width, petal_length,petal_width)
 <span class="kw">head</span>(attr)</code></pre></div>
 <pre><code>##                     
 ## 1 .Primitive(&quot;attr&quot;)</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(by_attr, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>attribut, <span class="dt">y=</span>measurement, <span class="dt">fill=</span>species)) +<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(by_attr, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>attribut, <span class="dt">y=</span>measurement, <span class="dt">fill=</span>species)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>() </code></pre></div>
 <p><img src="my-first-book_files/figure-html/unnamed-chunk-21-1.png" width="672" /> ```</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(by_attr, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>attribut, <span class="dt">y=</span>measurement)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_boxplot</span>() +<span class="st"> </span><span class="kw">facet_grid</span>(~species)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(by_attr, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>attribut, <span class="dt">y=</span>measurement)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_grid</span>(<span class="op">~</span>species)</code></pre></div>
 <p><img src="my-first-book_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(by_species, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>sepal_width, <span class="dt">y=</span>sepal_length, <span class="dt">group=</span>species, <span class="dt">colour=</span>species)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span>lm) +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(by_species, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>sepal_width, <span class="dt">y=</span>sepal_length, <span class="dt">group=</span>species, <span class="dt">colour=</span>species)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span>lm) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
 <p><img src="my-first-book_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(by_species, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>sepal_width, <span class="dt">y=</span>sepal_length, <span class="dt">group=</span>species, <span class="dt">colour=</span>species)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span>loess) +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(by_species, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>sepal_width, <span class="dt">y=</span>sepal_length, <span class="dt">group=</span>species, <span class="dt">colour=</span>species)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span>loess) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
 <p><img src="my-first-book_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 </div>
@@ -437,7 +437,7 @@ iris_sepal</code></pre></div>
 <p><a href="http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" class="uri">http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf</a></p>
 <div id="solution" class="section level3">
 <h3><span class="header-section-number">6.3.1</span> Solution</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pew &lt;-<span class="st"> </span>readr::<span class="kw">read_delim</span>(<span class="dt">file=</span><span class="st">&quot;http://stat405.had.co.nz/data/pew.txt&quot;</span>, <span class="dt">delim=</span><span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pew &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_delim</span>(<span class="dt">file=</span><span class="st">&quot;http://stat405.had.co.nz/data/pew.txt&quot;</span>, <span class="dt">delim=</span><span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</code></pre></div>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   religion = col_character(),
@@ -467,11 +467,11 @@ iris_sepal</code></pre></div>
 ##   `&gt;150k` = col_integer(),
 ##   `Don&#39;t know/refused` = col_integer()
 ## )</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_pew &lt;-<span class="st"> </span>pew  %&gt;%<span class="st"> </span><span class="kw">gather</span>(<span class="dt">key=</span><span class="st">&quot;income&quot;</span>, <span class="dt">value=</span><span class="st">&quot;effectif&quot;</span>, -religion)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_pew &lt;-<span class="st"> </span>pew  <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(<span class="dt">key=</span><span class="st">&quot;income&quot;</span>, <span class="dt">value=</span><span class="st">&quot;effectif&quot;</span>, <span class="op">-</span>religion)
 
-convert &lt;-<span class="st"> </span>function(income) {
-  convert.one &lt;-<span class="st"> </span>function(x) {
-    switch(x, 
+convert &lt;-<span class="st"> </span><span class="cf">function</span>(income) {
+  convert.one &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
+    <span class="cf">switch</span>(x, 
     <span class="st">&quot;&lt;$10k&quot;</span> =<span class="st"> </span><span class="dv">5000</span>,
     <span class="st">&quot;$10-20k&quot;</span> =<span class="st"> </span><span class="dv">15000</span>,
     <span class="st">&quot;$20-30k&quot;</span> =<span class="st"> </span><span class="dv">25000</span>,
@@ -487,9 +487,9 @@ convert &lt;-<span class="st"> </span>function(income) {
   <span class="kw">sapply</span>(income, convert.one)
 }
 
-tidy_pew %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">income.numeric =</span> <span class="kw">convert</span>(income)) %&gt;%<span class="st"> </span>
-<span class="kw">group_by</span>(religion) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean.income =</span> <span class="kw">weighted.mean</span>(income.numeric, effectif, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)) %&gt;%
+tidy_pew <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">income.numeric =</span> <span class="kw">convert</span>(income)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="kw">group_by</span>(religion) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean.income =</span> <span class="kw">weighted.mean</span>(income.numeric, effectif, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(mean.income))</code></pre></div>
 <pre><code>## # A tibble: 18 x 2
 ##                   religion mean.income
