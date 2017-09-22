@@ -32,10 +32,10 @@ Ce livre résume les expériences des participants durant l'atelier.
 
   - [R Markdown website](http://rmarkdown.rstudio.com/)
   - [blogdown: Creating Websites with R Markdown](https://bookdown.org/yihui/blogdown/)
-  - [https://bookdown.org/yihui/bookdown/](bookdown: Creating Books with R Markdown)
-  - [https://rstudio.github.io/learnr/](Interactive Tutorial with R)
-  - [http://r4ds.had.co.nz/](Le livre R for Data Science)
-  - [http://adv-r.had.co.nz/](Advanced R)
+  - [bookdown: Creating Books with R Markdown](https://bookdown.org/yihui/bookdown/)
+  - [Interactive Tutorial with R](https://rstudio.github.io/learnr/)
+  - [Le livre R for Data Science](http://r4ds.had.co.nz/)
+  - [Advanced R](http://adv-r.had.co.nz/)
 
 
 
